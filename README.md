@@ -1,10 +1,23 @@
-# All About MCP: A Fully Agent-Authored Coursebook
+# All About MCP: A Human + AI Coursebook
 
 ![alt text](screenshots/1.png)
 
-*All About MCP* is intended as a personal learning resource and offered, open source, as a model—demonstrating the specific pattern followed for creating long-form report-style documents using AI agents.
+*All About MCP* is a personal learning resource that demonstrates a **true AI** approach to creating long-form educational content—where *the human defines what to learn* and *AI agents handle the research and writing*.
 
-I've used this pattern on several occasions to create course-like "textbooks" that I have printed and converted into audiobook format.
+The key distinction: **you define the curriculum**, then the multi-agent pipeline researches, writes, formats, and produces the final outputs (PDF, audiobook).
+
+---
+
+## What Makes This "True AI"?
+
+This isn't AI writing whatever it wants—it's AI *executing your learning agenda*:
+
+1. **Human-Authored Curriculum**: You write the outline of what you want to learn
+2. **AI Research & Writing**: Agents research current information and write chapters following your structure
+3. **Consistent Output**: A style guide ensures the stitched document reads cohesively
+4. **Multiple Formats**: Automated PDF generation and audiobook synthesis
+
+The human remains in control of *what* is learned; AI handles *how* it's produced.
 
 ---
 
@@ -248,39 +261,51 @@ The `CLAUDE.md` file contains the specific generation task context for the MCP c
 
 ```
 All-About-MCP/
-├── CLAUDE.md                    # Project instructions and framework details
+├── CLAUDE.md                    # Project instructions for AI agents
 ├── README.md                    # This file
-├── pyproject.toml              # Python dependencies
+├── pyproject.toml               # Python dependencies
 ├── .env                         # API keys (GOOGLE_API_KEY, REPLICATE_API_TOKEN)
-├── api-ref/
-│   └── chatterbox.txt          # Chatterbox TTS API reference
+│
 ├── inputs/
-│   ├── curriculum-transcript-formatted.md   # Human-authored curriculum
-│   └── curriculum-transcript-raw.md         # Original transcript
+│   ├── curriculum-transcript-formatted.md   # ⭐ HUMAN-AUTHORED CURRICULUM
+│   ├── curriculum-transcript-raw.md         # Original transcript (reference)
+│   └── voices/
+│       └── corn-1min.mp3                    # Voice reference for TTS cloning
+│
 ├── outputs/
-│   ├── style-guide/            # Generated style guide
-│   ├── chapter-prompts/        # Structured prompts for each chapter
-│   ├── chapters/               # Individual chapter outputs
-│   ├── full-text/              # Stitched document
-│   ├── pdf/                    # Final PDF
-│   └── audio/                  # Audiobook files
-├── src/                        # Python implementation
-│   ├── main.py                 # CLI entry point
-│   ├── config.py               # Configuration and paths
-│   ├── gemini_client.py        # Gemini with Google Search grounding
-│   ├── agents.py               # CrewAI agent definitions
-│   ├── tasks.py                # CrewAI task definitions
-│   ├── pipeline.py             # Pipeline orchestration
-│   ├── pdf_converter.py        # Markdown to PDF conversion
-│   └── audiobook.py            # Chatterbox TTS generation
-└── agents/                     # Agent prompt documentation
-    ├── style-guide-generator.md
-    ├── curriculum-prompt-generator.md
-    ├── chapter-writer.md
-    ├── output-stitcher.md
-    ├── markdown-pdf-converter.md
-    ├── tts-formatter.md
-    └── audiobook-generator.md
+│   ├── style-guide/             # Generated style guide for consistency
+│   ├── chapter-prompts/         # Structured prompts (JSON) for each chapter
+│   ├── chapters/                # Individual chapter markdown files
+│   ├── images/                  # AI-generated images for chapters
+│   ├── full-text/               # Stitched document (MD + HTML)
+│   ├── pdf/                     # Final PDF with TOC and formatting
+│   └── audio/                   # Audiobook (chapter WAVs + final MP3)
+│
+├── src/                         # Python implementation
+│   ├── main.py                  # CLI entry point (--all, --book, --pdf, --audio)
+│   ├── config.py                # Configuration and paths
+│   ├── gemini_client.py         # Gemini with Google Search grounding
+│   ├── pipeline.py              # Pipeline orchestration
+│   ├── chapter_writer.py        # Chapter generation logic
+│   ├── pdf_converter.py         # Markdown to PDF (WeasyPrint)
+│   ├── pdf_generator.py         # Alternative PDF generation
+│   ├── audiobook.py             # Chatterbox TTS (integrated)
+│   ├── audiobook_generator.py   # Standalone audiobook generator
+│   ├── agents.py                # CrewAI agent definitions
+│   ├── tasks.py                 # CrewAI task definitions
+│   └── schemas.py               # Pydantic schemas
+│
+├── agents/                      # Agent prompt documentation
+│   ├── style-guide-generator.md
+│   ├── curriculum-prompt-generator.md
+│   ├── chapter-writer.md
+│   ├── output-stitcher.md
+│   ├── markdown-pdf-converter.md
+│   ├── tts-formatter.md
+│   └── audiobook-generator.md
+│
+└── api-ref/
+    └── chatterbox.txt           # Chatterbox TTS API reference
 ```
 
 ---
@@ -298,7 +323,7 @@ All-About-MCP/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/All-About-MCP.git
+git clone https://github.com/danielrosehill/All-About-MCP.git
 cd All-About-MCP
 
 # Create virtual environment and install dependencies
@@ -309,12 +334,19 @@ uv pip install -e .
 
 ### Configuration
 
-Edit `.env` with your API keys:
+1. Edit `.env` with your API keys:
 
 ```bash
 GOOGLE_API_KEY="your-gemini-api-key"
 REPLICATE_API_TOKEN="your-replicate-token"
 ```
+
+2. **Write your curriculum** in `inputs/curriculum-transcript-formatted.md`:
+   - This is the human-authored outline defining what the AI will write about
+   - Structure it as chapters/sections you want covered
+   - Be specific about topics, depth, and any special focus areas
+
+3. Optionally add a **voice reference** for audiobook cloning in `inputs/voices/`
 
 ### Usage
 
@@ -336,13 +368,17 @@ python -m src.main --style-guide
 
 # Use custom voice for audiobook (voice cloning)
 python -m src.main --audio --voice-reference "https://example.com/voice-sample.mp3"
+
+# Or run the standalone audiobook generator with local voice file
+python -m src.audiobook_generator
 ```
 
 ### How It Works
 
-1. **Style Guide Generation**: CrewAI agent analyzes curriculum, creates style guide
-2. **Curriculum Analysis**: Agent generates structured chapter prompts (JSON)
-3. **Chapter Writing**: Gemini with Google Search grounding writes each chapter with live research
-4. **Document Stitching**: Agent combines chapters into cohesive document
-5. **PDF Conversion**: WeasyPrint generates styled PDF
-6. **Audiobook Generation**: Chatterbox TTS via Replicate creates MP3 
+1. **You Write the Curriculum**: Define what you want to learn in `inputs/curriculum-transcript-formatted.md`
+2. **Style Guide Generation**: Agent analyzes your curriculum, creates style guide for consistency
+3. **Curriculum → Prompts**: Agent transforms your outline into structured chapter prompts (JSON)
+4. **Chapter Writing**: Gemini with Google Search grounding researches and writes each chapter
+5. **Document Stitching**: Chapters combined into cohesive document
+6. **PDF Conversion**: WeasyPrint generates styled PDF with TOC and page numbers
+7. **Audiobook Generation**: Chatterbox TTS via Replicate creates voice-cloned MP3
