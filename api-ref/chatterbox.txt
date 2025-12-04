@@ -1,0 +1,115 @@
+## Basic model info
+
+Model name: resemble-ai/chatterbox
+Model description: Generate expressive, natural speech. Features unique emotion control, instant voice cloning from short audio, and built-in watermarking.
+
+
+## Model inputs
+
+- prompt (required): Text to synthesize (string)
+- audio_prompt (optional): Path to the reference audio file (Optional) (string)
+- exaggeration (optional): Exaggeration (Neutral = 0.5, extreme values can be unstable) (number)
+- cfg_weight (optional): CFG/Pace weight (number)
+- temperature (optional): Temperature (number)
+- seed (optional): Seed (0 for random) (integer)
+
+
+## Model output schema
+
+{
+  "type": "string",
+  "title": "Output",
+  "format": "uri"
+}
+
+If the input or output schema includes a format of URI, it is referring to a file.
+
+
+## Example inputs and outputs
+
+Use these example outputs to better understand the types of inputs the model accepts, and the types of outputs the model returns:
+
+### Example (https://replicate.com/p/g7r2drc7psrmc0cqckasg1z4ec)
+
+#### Input
+
+```json
+{
+  "seed": 0,
+  "prompt": "We're excited to introduce Chatterbox, our first production-grade open source TTS model. Licensed under MIT, Chatterbox has been benchmarked against leading closed-source systems like ElevenLabs, and is consistently preferred in side-by-side evaluations.\n\nWhether you're working on memes, videos, games, or AI agents, Chatterbox brings your content to life. It's also the first open source TTS model to support emotion exaggeration control, a powerful feature that makes your voices stand out. Try it now on our Hugging Face Gradio app.\n\nIf you like the model but need to scale or finetune it for higher accuracy, check out our competitively priced TTS service (link). It delivers reliable performance with ultra-low latency of sub 200ms\u2014ideal for production use in agents, applications, or interactive media.",
+  "cfg_weight": 0.5,
+  "temperature": 0.8,
+  "exaggeration": 0.5
+}
+```
+
+#### Output
+
+```json
+"https://replicate.delivery/xezq/xx8Wscg0ve0gfko6krsG77SUuy7ZsQINBrJuRgq6GfCzJVspA/output.wav"
+```
+
+
+### Example (https://replicate.com/p/2dvx92gd6hrma0cqckbspk9rp0)
+
+#### Input
+
+```json
+{
+  "seed": 0,
+  "prompt": "Now let's make my mum's favourite. So three mars bars into the pan. Then we add the tuna and just stir for a bit, just let the chocolate and fish infuse. A sprinkle of olive oil and some tomato ketchup. Now smell that. Oh boy this is going to be incredible.",
+  "cfg_weight": 0.5,
+  "temperature": 0.8,
+  "audio_prompt": "https://replicate.delivery/pbxt/NAqZ7xd2HFMl0CE5kcnpRjycGOBY2KPshGKWVbdmWya4OwSm/chatterbox-female.mp4",
+  "exaggeration": 0.5
+}
+```
+
+#### Output
+
+```json
+"https://replicate.delivery/xezq/xX0RELa8UYJTLhUctfbSueZ1Zkb93iRSdwd8uZ0jrkEWmK2UA/output.wav"
+```
+
+
+## Model readme
+
+> <img width="800" alt="cb-big2" src="https://github.com/user-attachments/assets/bd8c5f03-e91d-4ee5-b680-57355da204d1" />
+> 
+> <h1 style="font-size: 32px">Chatterbox TTS</h1>
+> 
+> We're excited to introduce Chatterbox, [Resemble AI's](https://resemble.ai) first production-grade open source TTS model. Licensed under MIT, Chatterbox has been benchmarked against leading closed-source systems like ElevenLabs, and is consistently preferred in side-by-side evaluations.
+> 
+> Whether you're working on memes, videos, games, or AI agents, Chatterbox brings your content to life. It's also the first open source TTS model to support **emotion exaggeration control**, a powerful feature that makes your voices stand out. Try it now on our [Hugging Face Gradio app.](https://huggingface.co/spaces/ResembleAI/Chatterbox)
+> 
+> If you like the model but need to scale or tune it for higher accuracy, check out our competitively priced TTS service (<a href="https://resemble.ai">link</a>). It delivers reliable performance with ultra-low latency of sub 200ms—ideal for production use in agents, applications, or interactive media.
+> 
+> # Key Details
+> - SoTA zeroshot TTS
+> - 0.5B Llama backbone
+> - Unique exaggeration/intensity control
+> - Ultra-stable with alignment-informed inference
+> - Trained on 0.5M hours of cleaned data
+> - Watermarked outputs
+> - Easy voice conversion script
+> - [Outperforms ElevenLabs](https://podonos.com/resembleai/chatterbox)
+> 
+> # Tips
+> - **General Use (TTS and Voice Agents):**
+>   - The default settings (`exaggeration=0.5`, `cfg=0.5`) work well for most prompts.
+>   - If the reference speaker has a fast speaking style, lowering `cfg` to around `0.3` can improve pacing.
+> 
+> - **Expressive or Dramatic Speech:**
+>   - Try lower `cfg` values (e.g. `~0.3`) and increase `exaggeration` to around `0.7` or higher.
+>   - Higher `exaggeration` tends to speed up speech; reducing `cfg` helps compensate with slower, more deliberate pacing.
+> 
+> 
+> # Acknowledgements
+> - [Cosyvoice](https://github.com/FunAudioLLM/CosyVoice)
+> - [HiFT-GAN](https://github.com/yl4579/HiFTNet)
+> - [Llama 3](https://github.com/meta-llama/llama3)
+> 
+> # Built-in PerTh Watermarking for Responsible AI
+> 
+> Every audio file generated by Chatterbox includes [Resemble AI's Perth (Perceptual Threshold) Watermarker](https://github.com/resemble-ai/perth) - imperceptible neural watermarks that survive MP3 compression, audio editing, and common manipulations while maintaining nearly 100% detection accuracy.
+ 

@@ -1,5 +1,7 @@
 # All About MCP: A Fully Agent-Authored Coursebook
 
+![alt text](screenshots/1.png)
+
 *All About MCP* is intended as a personal learning resource and offered, open source, as a model—demonstrating the specific pattern followed for creating long-form report-style documents using AI agents.
 
 I've used this pattern on several occasions to create course-like "textbooks" that I have printed and converted into audiobook format.
@@ -28,22 +30,65 @@ For that reason, the methodology I have found success with—and share in this t
 
 The human develops a "curriculum" functioning as an outline of the topics to be covered in the long-form coursebook. This is effectively a table of contents. This is a fun process! The human can map out a personalised curriculum defining precisely what they wish to learn within this (large) topic.
 
-### Step 2: Prompt Chunking (Agent)
+### Step 2: Style Guide Generation (Agent)
 
-A second agent can be used to chunk this into specific text generation prompts. Claude Code (which I'm using to create this) provides a simple and elegant mechanism for doing exactly this: the curriculum chunking agent can chunk up the curriculum and form prompts for the curriculum writing agent, who can then author individual chapters.
+**Critical for consistency.** Before any content is written, a style guide agent analyzes the curriculum and generates a comprehensive style guide that defines:
 
-### Step 3: Chapter Generation (Agent)
+- **Voice and tone**: Authoritative yet accessible, conversational but professional
+- **Person and perspective**: Consistent use of first/second/third person
+- **Terminology**: Glossary of key terms, acronym handling, capitalization rules
+- **Document structure**: Heading hierarchy, section patterns, transition approaches
+- **Formatting standards**: Code blocks, lists, emphasis, callouts
+- **Content patterns**: How to introduce concepts, provide examples, conclude sections
 
-The large language model conducts the work of running the individual generation prompts one by one. In the most efficient architecture, several agents could be delegated to run this task in parallel. For simplicity of orchestration, the easiest implementation is just to have one single agent working through a list to validate completion.
+This style guide is then provided to every chapter-writer agent, ensuring the final stitched document reads as if written by a single author.
 
-### Step 4: Stitching (Agent)
+### Step 3: Prompt Chunking (Agent)
 
-Finally, a stitching agent is responsible for "stitching" the outputs together into a single readable document.
+A curriculum-prompt-generator agent transforms the curriculum into structured chapter prompts. Each prompt includes:
+
+- Chapter metadata (number, title, position in curriculum)
+- Context and continuity (what came before, reader's knowledge state)
+- Content requirements (topic, learning objectives, key concepts)
+- Structural guidelines (opening, core sections, closing)
+- Style directives (reference to the style guide)
+
+### Step 4: Chapter Generation (Agent - Parallel)
+
+Chapter-writer agents generate content from the structured prompts. Each writer receives:
+
+1. Their specific chapter prompt
+2. The style guide (for consistency)
+3. Optionally: research context (for up-to-date information)
+
+**Parallel execution** is supported—multiple chapters can be written simultaneously since each agent has the style guide ensuring consistency.
+
+### Step 5: Stitching (Agent)
+
+The output-stitcher agent concatenates chapters into a single document:
+
+- Determines correct ordering from file naming
+- Preserves formatting and structure
+- Adds section breaks as needed
+- Reports any inconsistencies found
+
+### Step 6: PDF Conversion (Agent)
+
+The markdown-pdf-converter agent produces the final PDF:
+
+- Adds title page, table of contents, page numbers
+- Ensures chapters start on new pages
+- Applies consistent typography and styling
+
+### Optional: Audiobook Generation
+
+See the Audiobook Conversion section below for generating audio output using Chatterbox TTS.
 
 ### Optional Enhancements
 
 - The authoring agent could be instructed to use Mermaid in order to create flowcharts for explanations that benefit from diagrammatic representation.
 - Authoring agents can also leverage image generation tooling in order to create engaging images to break up the monotony of pure text.
+- **Research integration**: For rapidly evolving topics, a research agent (using Tavily, Perplexity, or Context7) can gather current information to inject into chapter prompts.
 
 ---
 
@@ -73,14 +118,35 @@ Finally, a PDF is stitched together.
 
 I enjoy consuming long-form content through audio.
 
-The mechanism I've used to date for getting from the large Markdown document to audio is probably inferior to that which others have come up with (it's impossible to keep up with AI!).
+### TTS Service: Resemble AI Chatterbox
 
-### My Current Approach
+This project uses **Chatterbox** by Resemble AI for text-to-speech synthesis:
 
-1. **Text Conversion**: Use an LLM to convert Markdown into TTS-friendly text. The best practice here I've found is to instruct the agent according to the TTS that you're targeting and the prosody that it supports.
-2. **Audio Generation**: Pass the text to a TTS model. Like the text generation, this also needs to be chunked and then stitched together.
+- **Model**: `resemble-ai/chatterbox` via Replicate API
+- **Quality**: Production-grade, benchmarked against ElevenLabs
+- **License**: MIT (open source)
+- **Key Features**:
+  - Emotion exaggeration control (unique to Chatterbox)
+  - Zero-shot voice cloning from short audio samples
+  - Built-in watermarking for responsible AI
+  - 0.5B Llama backbone, trained on 500K hours of data
 
-So essentially the model involves reformatting the delivered text, instructing the LLM to omit non-readable elements (like diagrams). This is again another use case in which LLMs come into their own: simple regex does not, in my experience, get far enough.
+### Audio Pipeline
+
+1. **Text Conversion** (`tts-formatter` agent): Convert Markdown into TTS-friendly text optimized for Chatterbox:
+   - Sentence length: 15-25 words optimal
+   - Strip markup, expand abbreviations
+   - Convert technical content to spoken descriptions
+
+2. **Audio Generation** (`audiobook-generator` agent): Orchestrate Chatterbox via Replicate:
+   - Chunk text to API limits
+   - Generate audio segments with consistent voice
+   - Concatenate into final audiobook
+   - Output to `outputs/audio/`
+
+### Configuration
+
+API key stored in `.env` as `REPLICATE_API_TOKEN`. See `api-ref/chatterbox.txt` for full API documentation.
 
 ---
 
@@ -100,9 +166,72 @@ The stitched document should not read like a stitched composite of short outputs
 
 ### Solutions
 
-**Previous Chapter Context**: One potential solution at the prompting level is to instruct the chapter generation agent to read (only) the previous chapter. By asking it to parse only one previous output, this limits the context, preventing the generation context and the previous context from overwhelming context windows.
+**Style Guide (Primary Solution)**: The most effective mechanism for consistency. The `style-guide-generator` agent creates a comprehensive style guide before any content generation begins. This guide covers:
 
-**Style Guide**: Paralleling the process used by human authors, a style guide is also an effective mechanism. The agent gets sight of the overall task and the tone of voice to be used in the composition. This can also be used to ensure consistent formatting, ranging from source formatting to even the type of referencing used.
+- Voice, tone, and perspective
+- Terminology and vocabulary standards
+- Structural patterns and formatting rules
+- Content patterns (introductions, examples, conclusions)
+
+Every chapter-writer agent receives this style guide, ensuring unified output regardless of whether chapters are generated sequentially or in parallel.
+
+**Previous Chapter Context (Secondary)**: One potential solution at the prompting level is to instruct the chapter generation agent to read (only) the previous chapter. By asking it to parse only one previous output, this limits the context, preventing the generation context and the previous context from overwhelming context windows.
+
+**Structured Prompts**: The `curriculum-prompt-generator` ensures each chapter prompt includes explicit style directives and continuity information, referencing what came before and what comes after.
+
+---
+
+## Generation Process
+
+All starting from the user-defined curriculum!
+
+### Slash command initiation:
+
+![alt text](screenshots/1.png)
+
+### Pipeline stage 1: style guide definition
+
+![alt text](screenshots/2.png)
+
+### Pipelie stage 2: curricum -> prompt splitting
+
+![alt text](screenshots/3.png)
+
+![alt text](screenshots/4.png)
+
+
+
+---
+
+## Recommended Multi-Agent Framework
+
+While this pattern was initially developed using Claude Code's agent system, it's designed for implementation with dedicated multi-agent frameworks:
+
+### GPT-Researcher + LangGraph (Recommended)
+
+For projects requiring current information (like MCP, which evolves rapidly):
+
+- **GPT-Researcher**: Handles web research with automatic citations
+- **LangGraph**: Orchestrates the pipeline with state management and parallel execution
+
+```
+Human Curriculum → Style Guide → Research Phase → Parallel Chapter Writing → Stitch → PDF → Audio
+```
+
+### Alternative Frameworks
+
+- **CrewAI**: Role-based agents, excellent for content pipelines with defined stages
+- **STORM (Stanford)**: Wikipedia-style article generation with multi-perspective research
+- **AutoGen**: Enterprise-focused with robust error handling
+
+### Key Integration Points
+
+1. **Research Agent**: Use Tavily, Perplexity, or Context7 to gather current information
+2. **Style Guide Distribution**: Ensure all chapter writers receive the same style guide
+3. **Parallel Execution**: LangGraph/CrewAI can run chapter writers concurrently
+4. **TTS Integration**: Chatterbox via Replicate for audiobook generation
+
+See `CLAUDE.md` for specific implementation details.
 
 ---
 
@@ -113,4 +242,107 @@ This repository serves a dual purpose:
 1. **Demonstrating the pattern**: Showing how this chunked generation and stitching process works in practice
 2. **Generating deliverables**: Creating the actual MCP coursebook for personal reading and listening
 
-The `CLAUDE.md` file contains the specific generation task context for the MCP coursebook. 
+The `CLAUDE.md` file contains the specific generation task context for the MCP coursebook.
+
+### Directory Layout
+
+```
+All-About-MCP/
+├── CLAUDE.md                    # Project instructions and framework details
+├── README.md                    # This file
+├── pyproject.toml              # Python dependencies
+├── .env                         # API keys (GOOGLE_API_KEY, REPLICATE_API_TOKEN)
+├── api-ref/
+│   └── chatterbox.txt          # Chatterbox TTS API reference
+├── inputs/
+│   ├── curriculum-transcript-formatted.md   # Human-authored curriculum
+│   └── curriculum-transcript-raw.md         # Original transcript
+├── outputs/
+│   ├── style-guide/            # Generated style guide
+│   ├── chapter-prompts/        # Structured prompts for each chapter
+│   ├── chapters/               # Individual chapter outputs
+│   ├── full-text/              # Stitched document
+│   ├── pdf/                    # Final PDF
+│   └── audio/                  # Audiobook files
+├── src/                        # Python implementation
+│   ├── main.py                 # CLI entry point
+│   ├── config.py               # Configuration and paths
+│   ├── gemini_client.py        # Gemini with Google Search grounding
+│   ├── agents.py               # CrewAI agent definitions
+│   ├── tasks.py                # CrewAI task definitions
+│   ├── pipeline.py             # Pipeline orchestration
+│   ├── pdf_converter.py        # Markdown to PDF conversion
+│   └── audiobook.py            # Chatterbox TTS generation
+└── agents/                     # Agent prompt documentation
+    ├── style-guide-generator.md
+    ├── curriculum-prompt-generator.md
+    ├── chapter-writer.md
+    ├── output-stitcher.md
+    ├── markdown-pdf-converter.md
+    ├── tts-formatter.md
+    └── audiobook-generator.md
+```
+
+---
+
+## Quick Start
+
+### Prerequisites
+
+- Python 3.11+
+- [uv](https://github.com/astral-sh/uv) (recommended) or pip
+- Google Gemini API key
+- Replicate API token (for audiobook generation)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/All-About-MCP.git
+cd All-About-MCP
+
+# Create virtual environment and install dependencies
+uv venv .venv
+source .venv/bin/activate
+uv pip install -e .
+```
+
+### Configuration
+
+Edit `.env` with your API keys:
+
+```bash
+GOOGLE_API_KEY="your-gemini-api-key"
+REPLICATE_API_TOKEN="your-replicate-token"
+```
+
+### Usage
+
+```bash
+# Generate everything (book + PDF + audiobook)
+python -m src.main --all
+
+# Generate just the book (markdown)
+python -m src.main --book
+
+# Generate PDF from existing markdown
+python -m src.main --pdf
+
+# Generate audiobook from existing markdown
+python -m src.main --audio
+
+# Generate only the style guide
+python -m src.main --style-guide
+
+# Use custom voice for audiobook (voice cloning)
+python -m src.main --audio --voice-reference "https://example.com/voice-sample.mp3"
+```
+
+### How It Works
+
+1. **Style Guide Generation**: CrewAI agent analyzes curriculum, creates style guide
+2. **Curriculum Analysis**: Agent generates structured chapter prompts (JSON)
+3. **Chapter Writing**: Gemini with Google Search grounding writes each chapter with live research
+4. **Document Stitching**: Agent combines chapters into cohesive document
+5. **PDF Conversion**: WeasyPrint generates styled PDF
+6. **Audiobook Generation**: Chatterbox TTS via Replicate creates MP3 

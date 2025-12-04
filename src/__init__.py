@@ -1,0 +1,1 @@
+# MCP Crash Course Generator

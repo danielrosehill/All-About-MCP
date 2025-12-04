@@ -1,0 +1,52 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment files (keep .env.example, ignore actual .env)
+# Note: .env is tracked in this repo for convenience, but typically should be ignored
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated outputs (optional - you may want to track these)
+# outputs/chapters/*.md
+# outputs/full-text/*.md
+# outputs/pdf/*.pdf
+# outputs/audio/*.mp3
+# outputs/audio/temp/
+
+# Temporary files
+*.tmp
+*.temp
+*.log

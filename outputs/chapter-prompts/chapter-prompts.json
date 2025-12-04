@@ -1,0 +1,430 @@
+[
+  {
+    "chapter_number": 1,
+    "title": "Introduction to MCP: Origins and Fundamentals",
+    "core_questions": [
+      "What is MCP and what problem does it solve?",
+      "Who created MCP and what was the initial motivation?",
+      "What are the core components of MCP?",
+      "How does MCP differ from traditional API interactions?"
+    ],
+    "research_topics": [
+      "Anthropic's official documentation on MCP",
+      "Early announcements and blog posts about MCP's launch",
+      "The individuals or teams involved in MCP's initial development at Anthropic"
+    ],
+    "key_concepts": [
+      "Model Context Protocol",
+      "Agent-system interaction",
+      "API abstraction",
+      "Intent representation"
+    ],
+    "examples_needed": [
+      "A simple MCP interaction example (e.g., sending an email)",
+      "A comparison of traditional API calls vs. MCP calls for the same task"
+    ],
+    "connections": [
+      "Chapter 2: Technical Deep Dive (for understanding the underlying mechanisms)",
+      "Chapter 3: Security Considerations (for understanding potential risks)"
+    ],
+    "potential_controversies": [
+      "Is MCP just an unnecessary layer on top of existing APIs?",
+      "Does MCP introduce more complexity than it solves?"
+    ]
+  },
+  {
+    "chapter_number": 2,
+    "title": "Technical Deep Dive: Transport Mechanisms and Architectures",
+    "core_questions": [
+      "What are SSE and STDIO in the context of MCP?",
+      "What are the advantages and disadvantages of each transport mechanism?",
+      "What is the difference between remote and local MCP?",
+      "When would you choose a local MCP over a remote one, and vice versa?"
+    ],
+    "research_topics": [
+      "Technical specifications for SSE and STDIO",
+      "Current best practices for transport mechanisms in MCP",
+      "Real-world examples of services offering both remote and local MCP endpoints"
+    ],
+    "key_concepts": [
+      "Server-Sent Events (SSE)",
+      "Standard Input/Output (STDIO)",
+      "Remote MCP",
+      "Local MCP",
+      "Transport layer"
+    ],
+    "examples_needed": [
+      "Code examples of setting up and using both SSE and STDIO with MCP",
+      "Architectural diagrams illustrating remote and local MCP deployments"
+    ],
+    "connections": [
+      "Chapter 1: Introduction to MCP (for understanding the basic concepts)",
+      "Chapter 3: Security Considerations (for understanding transport-related security risks)"
+    ],
+    "potential_controversies": [
+      "Is SSE truly deprecated, or are there still valid use cases?",
+      "What are the performance implications of different transport mechanisms?"
+    ]
+  },
+  {
+    "chapter_number": 3,
+    "title": "Security Considerations: Risks and Mitigation Strategies",
+    "core_questions": [
+      "What are the primary security risks associated with MCP?",
+      "How does MCP handle authentication and authorization?",
+      "How can users verify the legitimacy of MCP implementations?",
+      "What are the best practices for securing MCP deployments?"
+    ],
+    "research_topics": [
+      "Common security vulnerabilities in API integrations",
+      "Existing security frameworks and standards applicable to MCP",
+      "Case studies of security breaches involving API key exposure"
+    ],
+    "key_concepts": [
+      "API key security",
+      "Authentication",
+      "Authorization",
+      "Trust and verification",
+      "Man-in-the-middle attacks"
+    ],
+    "examples_needed": [
+      "Examples of secure and insecure MCP implementations",
+      "Code examples of implementing authentication and authorization in MCP"
+    ],
+    "connections": [
+      "Chapter 1: Introduction to MCP (for understanding the potential attack surface)",
+      "Chapter 4: The Ecosystem (for understanding the risks associated with third-party MCPs)"
+    ],
+    "potential_controversies": [
+      "Is MCP inherently more risky than traditional API integrations?",
+      "How can the community establish trust in MCP implementations?"
+    ]
+  },
+  {
+    "chapter_number": 4,
+    "title": "The MCP Ecosystem: Registries, Fragmentation, and Tools",
+    "core_questions": [
+      "What are MCP registries and why are they important?",
+      "What are the benefits and drawbacks of the current proliferation of MCP registries?",
+      "Why is there so much fragmentation in MCP tool definitions?",
+      "What tools exist to manage MCP fragmentation, and how do they work?"
+    ],
+    "research_topics": [
+      "Existing MCP registries (e.g., Smithery, GitHub) and their features",
+      "The motivations behind different tools having their own MCP definitions",
+      "The functionality and usage of MCPM and other proxy tools"
+    ],
+    "key_concepts": [
+      "MCP registries",
+      "Tool fragmentation",
+      "Standardization",
+      "MCPM",
+      "Proxy tools"
+    ],
+    "examples_needed": [
+      "Examples of MCP definitions used by different tools (e.g., VS Code, Cline)",
+      "A demonstration of using MCPM to manage MCP configurations"
+    ],
+    "connections": [
+      "Chapter 1: Introduction to MCP (for understanding the complexity of the ecosystem)",
+      "Chapter 8: Development and Implementation (for understanding the challenges of creating MCPs)"
+    ],
+    "potential_controversies": [
+      "Is the current level of fragmentation hindering MCP adoption?",
+      "What is the best approach to achieve standardization in the MCP ecosystem?"
+    ]
+  },
+  {
+    "chapter_number": 5,
+    "title": "Use Cases and Limits: Exploring the Potential of MCP",
+    "core_questions": [
+      "What are the most common and compelling use cases for MCP?",
+      "What are the advanced use cases that push the boundaries of MCP?",
+      "What are the theoretical and practical limits of MCP?",
+      "Where does MCP stop being the right solution?"
+    ],
+    "research_topics": [
+      "Real-world examples of successful MCP deployments",
+      "Innovative applications of MCP in agentic AI and other fields",
+      "The limitations of current language models and their impact on MCP's capabilities"
+    ],
+    "key_concepts": [
+      "Agentic AI",
+      "API access",
+      "Payments and wallets",
+      "Operational technology (OT)",
+      "SCADA systems"
+    ],
+    "examples_needed": [
+      "Examples of using MCP for email, file system access, and other common tasks",
+      "Examples of using MCP for payments and agent wallets",
+      "Hypothetical examples of pushing MCP to its limits (e.g., OT systems)"
+    ],
+    "connections": [
+      "Chapter 1: Introduction to MCP (for understanding the initial vision)",
+      "Chapter 6: Industry Landscape (for understanding current adoption)"
+    ],
+    "potential_controversies": [
+      "Is MCP overhyped, or does it truly unlock significant new capabilities?",
+      "What are the ethical considerations of giving agents access to sensitive systems via MCP?"
+    ]
+  },
+  {
+    "chapter_number": 6,
+    "title": "Industry Landscape: Vendors, Adoption, and Alternatives",
+    "core_questions": [
+      "Which vendors are actively supporting MCP?",
+      "How has OpenAI's adoption of MCP influenced the industry?",
+      "What are the alternative approaches to MCP?",
+      "How does MCP compare to using documented CLIs for agent interaction?"
+    ],
+    "research_topics": [
+      "Vendor announcements and documentation related to MCP support",
+      "The impact of OpenAI's adoption on the MCP ecosystem",
+      "Alternative approaches to API integration and agent-system interaction",
+      "Tools like Context7 and their approach to CLI documentation"
+    ],
+    "key_concepts": [
+      "Vendor adoption",
+      "CLI alternatives",
+      "Context7",
+      "API integration",
+      "Agent-system interaction"
+    ],
+    "examples_needed": [
+      "Examples of vendors that support MCP and their specific implementations",
+      "Examples of using documented CLIs for agent interaction",
+      "A comparison of MCP and CLI-based approaches for the same task"
+    ],
+    "connections": [
+      "Chapter 1: Introduction to MCP (for understanding the origins)",
+      "Chapter 5: Use Cases and Limits (for understanding the potential benefits)"
+    ],
+    "potential_controversies": [
+      "Is MCP the best approach for agent-system interaction, or are there better alternatives?",
+      "Should vendors focus on supporting MCP or improving CLI documentation?"
+    ]
+  },
+  {
+    "chapter_number": 7,
+    "title": "Enterprise and the Future of Work: MCP in the Workplace",
+    "core_questions": [
+      "How can MCP be used in enterprise environments?",
+      "What are MCP proxies and gateways, and how do they work?",
+      "What is the 'Connectors' vision for MCP in the workplace?",
+      "How will remote workers manage their personal and work MCPs?",
+      "What are the emerging best practices for MCP federation?"
+    ],
+    "research_topics": [
+      "Enterprise architecture patterns for MCP",
+      "MCP proxy and gateway implementations",
+      "The future of work and its impact on technology adoption",
+      "Remote work security best practices"
+    ],
+    "key_concepts": [
+      "MCP proxies",
+      "MCP gateways",
+      "Connectors",
+      "Federation",
+      "Remote work"
+    ],
+    "examples_needed": [
+      "Examples of enterprise MCP deployments",
+      "Architectural diagrams of MCP proxies and gateways",
+      "Scenarios of how MCP might be used in the workplace of the future"
+    ],
+    "connections": [
+      "Chapter 3: Security Considerations (for understanding enterprise security requirements)",
+      "Chapter 4: The Ecosystem (for understanding the complexity of managing MCPs in an organization)"
+    ],
+    "potential_controversies": [
+      "Is MCP ready for enterprise adoption?",
+      "How can enterprises balance security and usability when deploying MCP?"
+    ]
+  },
+  {
+    "chapter_number": 8,
+    "title": "Development and Implementation: Building Custom MCPs",
+    "core_questions": [
+      "When should you build a custom MCP?",
+      "What are the challenges of tool definition in MCP?",
+      "What are the key considerations for designing and implementing a custom MCP?",
+      "How do enterprise and private MCPs differ from public ones?"
+    ],
+    "research_topics": [
+      "Existing frameworks and libraries for building MCPs",
+      "Best practices for tool definition in MCP",
+      "Examples of custom MCP implementations",
+      "Anthropic's work on improving tool exposure in MCP"
+    ],
+    "key_concepts": [
+      "Custom MCP development",
+      "Tool definition",
+      "Private MCPs",
+      "Enterprise MCPs",
+      "API wrappers"
+    ],
+    "examples_needed": [
+      "Code examples of building a simple custom MCP",
+      "Examples of tool definition strategies",
+      "Case studies of successful custom MCP deployments"
+    ],
+    "connections": [
+      "Chapter 2: Technical Deep Dive (for understanding the underlying mechanisms)",
+      "Chapter 4: The Ecosystem (for understanding the challenges of managing MCPs)"
+    ],
+    "potential_controversies": [
+      "Is it worth the effort to build custom MCPs, or should you rely on existing ones?",
+      "How can you ensure that custom MCPs are secure and reliable?"
+    ]
+  },
+  {
+    "chapter_number": 9,
+    "title": "Global and Public Sector Applications: Open Data and Government",
+    "core_questions": [
+      "How can MCP be used to access public APIs and open data?",
+      "What are the benefits of using MCP for open data initiatives?",
+      "How can governments use MCP to improve transparency and open government?",
+      "What are the differences in MCP adoption between East and West?",
+      "What are the most impressive use cases in different geographies?"
+    ],
+    "research_topics": [
+      "Examples of public APIs and open data sources that could be accessed via MCP",
+      "Government initiatives related to open data and transparency",
+      "The use of MCP in different countries and regions",
+      "Chinese AI models like Qwen and their potential for MCP integration"
+    ],
+    "key_concepts": [
+      "Open data",
+      "Open government",
+      "Public APIs",
+      "Transparency",
+      "Global AI landscape"
+    ],
+    "examples_needed": [
+      "Examples of using MCP to access UN, World Bank, and OECD datasets",
+      "Examples of governments using MCP for transparency initiatives",
+      "Case studies of MCP deployments in different countries and regions"
+    ],
+    "connections": [
+      "Chapter 5: Use Cases and Limits (for understanding the potential applications)",
+      "Chapter 6: Industry Landscape (for understanding global vendor support)"
+    ],
+    "potential_controversies": [
+      "Can MCP truly democratize access to public data?",
+      "What are the challenges of implementing MCP in diverse cultural and regulatory contexts?"
+    ]
+  },
+  {
+    "chapter_number": 10,
+    "title": "Evolving MCP: The Future and Roadmap",
+    "core_questions": [
+      "What are the key areas where MCP needs to evolve?",
+      "What are the key factors driving the future development of MCP?",
+      "What is the roadmap for MCP standardization?",
+      "How will MCP adapt to emerging technologies such as new LLMs and AI agents?"
+    ],
+    "research_topics": [
+      "Industry trends and future predictions for MCP",
+      "Key areas of research and development for AI protocol",
+      "Future applications of MCP across various industries",
+      "The evolution of LLMs and AI agents"
+    ],
+    "key_concepts": [
+      "MCP standardization",
+      "LLMs",
+      "AI agents",
+      "Artificial intelligence",
+      "Innovation"
+    ],
+    "examples_needed": [
+      "Real-world examples of evolving MCP",
+      "Hypothetical scenarios of MCP being used in the future",
+      "Industry trends and market forecasts"
+    ],
+    "connections": [
+      "Chapter 1: Introduction to MCP (for understanding the origins)",
+      "Chapter 5: Use Cases and Limits (for understanding the potential applications)",
+      "Chapter 6: Industry Landscape (for understanding global vendor support)"
+    ],
+    "potential_controversies": [
+      "Whether MCP will be widely adopted in the future",
+      "The future development and usage in the marketplace"
+    ]
+  },
+  {
+    "chapter_number": 11,
+    "title": "Best Practices for MCP",
+    "core_questions": [
+      "What are the best practices for designing and implementing custom MCP?",
+      "What are the best practices for using MCP in a secure and reliable manner?",
+      "What are the best practices for managing MCPs in an enterprise environment?",
+      "What are the best practices for contributing to the MCP ecosystem?"
+    ],
+    "research_topics": [
+      "Industry standards and best practices for MCP",
+      "Security guidelines and recommendations for MCP",
+      "Examples of well-designed MCP implementations",
+      "Community resources and documentation for MCP"
+    ],
+    "key_concepts": [
+      "Security",
+      "Reliability",
+      "Scalability",
+      "Performance",
+      "Maintainability"
+    ],
+    "examples_needed": [
+      "Code examples of implementing best practices in MCP",
+      "Case studies of successful MCP deployments",
+      "Guidelines and recommendations for the MCP ecosystem"
+    ],
+    "connections": [
+      "Chapter 2: Technical Deep Dive (for understanding the underlying mechanisms)",
+      "Chapter 3: Security Considerations (for understanding enterprise security requirements)",
+      "Chapter 4: The Ecosystem (for understanding the complexity of managing MCPs)"
+    ],
+    "potential_controversies": [
+      "Balancing innovation with standardization",
+      "The trade-offs between different design choices",
+      "Ensuring that best practices are widely adopted and followed"
+    ]
+  },
+  {
+    "chapter_number": 12,
+    "title": "MCP Wrap-Up and Future Directions",
+    "core_questions": [
+      "What are the key takeaways from this curriculum?",
+      "What are the next steps for learning more about MCP?",
+      "What are the opportunities for contributing to the MCP community?",
+      "Where can readers find additional resources and support?"
+    ],
+    "research_topics": [
+      "Community forums and mailing lists for MCP",
+      "Open-source projects related to MCP",
+      "Upcoming events and conferences related to MCP",
+      "Job opportunities in the MCP ecosystem"
+    ],
+    "key_concepts": [
+      "Community",
+      "Open source",
+      "Innovation",
+      "Learning",
+      "Contribution"
+    ],
+    "examples_needed": [
+      "Examples of community resources and projects",
+      "Examples of job opportunities in the MCP ecosystem",
+      "Examples of how readers can get involved"
+    ],
+    "connections": [
+      "All previous chapters",
+      "Future exploration of MCP"
+    ],
+    "potential_controversies": [
+      "The future direction of MCP",
+      "Whether MCP will achieve widespread adoption",
+      "The ethical considerations of MCP"
+    ]
+  }
+]
