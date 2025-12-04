@@ -46,6 +46,9 @@ Thumbs.db
 # outputs/audio/*.mp3
 # outputs/audio/temp/
 
+# Audio chunks (intermediate files, not needed in repo)
+outputs/audio/chunks/
+
 # Temporary files
 *.tmp
 *.temp
